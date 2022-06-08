@@ -1,7 +1,10 @@
 $bgc: gray;
 
 .App {
-  text-align: center;
-  background-color: $bgc;
-
+  min-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  background: #0d1117;
 }
