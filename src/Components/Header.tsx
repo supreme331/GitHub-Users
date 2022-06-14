@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 import {Context} from "../Context";
 import styles from "./Github.module.scss";
 import logoIcon from "../img/github.png"
+import {NavLink} from "react-router-dom";
 
 export const Header = () => {
     const {
@@ -17,12 +18,12 @@ export const Header = () => {
     return (
         <div className={styles.header}>
             <div className={styles.logo}>
-                <a className={styles.logotype} href={'/'}>
+                <NavLink className={styles.logotype} to={'/'}>
                     <img src={logoIcon} alt="logo"/>
-                </a>
-                <a href={'/'}>
+                </NavLink>
+                <NavLink to={'/'}>
                     <h1 className={styles.headerTitle}>GitHub users</h1>
-                </a>
+                </NavLink>
             </div>
             <SearchForm tempSearch={tempSearch} setTempSearch={setTempSearch} submit={submit}/>
         </div>
