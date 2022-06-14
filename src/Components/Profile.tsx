@@ -1,40 +1,60 @@
 import styles from "./Github.module.scss";
 import React, {useEffect, useState, useContext} from "react";
-import { UserType} from "./Github";
+import {UserType} from "./Github";
 import axios from "axios";
 import {Context} from "../Context";
 import {Additional} from "./Additional";
 
 export const Profile = () => {
-    const [userDetails, setUserDetails] = useState<UserType | null>(null)
-    const [pagesCount, setPagesCount] = useState<number>()
-    const {selectedUser, setSelectedUser, isFollowersRequested, setIsFollowersRequested,
-        isFollowingRequested, setIsFollowingRequested,
-        isRepositoriesRequested, setIsRepositoriesRequested,
-        setFetchingRepositories, calculatePagesCount, setFetchingFollowing, setFetchingFollowers
-        } = useContext(Context)
+    const {
+        selectedUser, setSelectedUser, isFollowersRequested, setIsFollowersRequested,
+        isFollowingRequested, setIsFollowingRequested, setIsRepositoriesRequested,
+        setFetchingRepositories, calculatePagesCount, setFetchingFollowing, setFetchingFollowers,
+        isUserRemembered, setIsUserRemembered, rememberedUsers
+    } = useContext(Context)
 
+    const [userDetails, setUserDetails] = useState<UserType | null>(null)
+
+    const rememberUser = (userId: number, userLogin: string) => {
+        localStorage.setItem((userId).toString(), userLogin)
+        setIsUserRemembered(true)
+    }
+    const removeUser = (userId: number) => {
+        localStorage.removeItem((userId).toString())
+        setIsUserRemembered(false)
+    }
     useEffect(() => {
-        console.log('Sync user details')
-        if(selectedUser) {
+        setIsUserRemembered(false)
+        if (selectedUser) {
+            document.title = selectedUser.login
             axios
                 .get<UserType>(`https://api.github.com/users/${selectedUser.login}`)
                 .then(res => {
                     setUserDetails(res.data)
                     calculatePagesCount(res.data.followers, res.data.following, res.data.public_repos)
                 })
+            rememberedUsers.map(u => u.login === selectedUser.login && setIsUserRemembered(true))
         }
     }, [selectedUser])
-    return (
-        <div className={styles.userProfile}>
+    return (<div className={styles.userProfile}>
             {!!userDetails && <div className={styles.profileContent}>
-                <div>
-                    <div className={`${styles.avatar +' ' + styles._ibg}`}>
+                <div className={styles.avatarBlock}>
+                    <div className={`${styles.avatar + ' ' + styles._ibg}`}>
                         <img src={userDetails.avatar_url} alt=""/>
                     </div>
-                    <a className={styles.button} target={'_blank'} href={`https://github.com/${userDetails.login}`}>
-                        Open profile in GitHub
-                    </a>
+                    <div className={styles.buttons}>
+                        <a className={styles.button} target='_blank' rel='noreferrer' href={`https://github.com/${userDetails.login}`}>
+                            Open profile in GitHub
+                        </a>
+                        {
+                            isUserRemembered ? <div className={styles.button} onClick={() => {
+                                    removeUser(userDetails.id)
+                                }}>Remove from remembered</div>
+                                : <div className={styles.button} onClick={() => {
+                                    rememberUser(userDetails.id, userDetails.login)
+                                }}>Remember user</div>
+                        }
+                    </div>
                 </div>
                 <div className={styles.profileInfo}>
                     <div className={styles.profileLogin}>{userDetails.login}</div>
@@ -48,21 +68,20 @@ export const Profile = () => {
                         userDetails.location && <div><span>Location:</span> {userDetails.location}</div>
                     }
                     {
-                        userDetails.twitter_username && <div><span>Twitter user name:</span> {userDetails.twitter_username}</div>
+                        userDetails.twitter_username &&
+                        <div><span>Twitter user name:</span> {userDetails.twitter_username}</div>
                     }
                     {
                         userDetails.bio && <div><span>Bio:</span> {userDetails.bio}</div>
                     }
                     {
-                        userDetails.blog && <a className={styles.profileInfoItem} target={'_blank'} href={userDetails.blog}>Blog</a>
+                        userDetails.blog &&
+                        <a className={styles.profileInfoItem} target='_blank' rel='noreferrer' href={userDetails.blog}>Blog</a>
                     }
                     <div className={styles.profileInfoItem} onClick={() => {
                         setIsFollowingRequested(false)
                         setIsRepositoriesRequested(false)
-                        // if(isFollowersRequested) {
-                        //     calculatePagesCount(userDetails.followers)
-                        // }
-                        if(userDetails.followers > 0) {
+                        if (userDetails.followers > 0) {
                             setFetchingFollowers(true)
                             setIsFollowersRequested(!isFollowersRequested)
                         }
@@ -70,11 +89,7 @@ export const Profile = () => {
                     <div className={styles.profileInfoItem} onClick={() => {
                         setIsFollowersRequested(false)
                         setIsRepositoriesRequested(false)
-
-                        // if(isFollowingRequested) {
-                        //     calculatePagesCount(userDetails.following)
-                        // }
-                        if(userDetails.following > 0) {
+                        if (userDetails.following > 0) {
                             setFetchingFollowing(true)
                             setIsFollowingRequested(!isFollowingRequested)
                         }
@@ -83,18 +98,17 @@ export const Profile = () => {
                         setIsFollowersRequested(false)
                         setIsFollowingRequested(false)
                         setIsRepositoriesRequested(true)
-                        // if(isRepositoriesRequested) {
-                        //     calculatePagesCount(userDetails.public_repos)
-                        // }
-                        if(userDetails.public_repos > 0) {
+                        if (userDetails.public_repos > 0) {
                             setFetchingRepositories(true)
-                                                    }
+                        }
                     }}>Repositories: {userDetails.public_repos}</div>
-
                 </div>
-                <div className={styles.closeUserProfile} onClick={() => {setSelectedUser(null)}}>Close</div>
+                <div className={styles.closeUserProfileBtn} onClick={() => {
+                    setSelectedUser(null)
+                }}>X
+                </div>
             </div>}
-            <Additional />
+            <Additional/>
         </div>
     )
 }

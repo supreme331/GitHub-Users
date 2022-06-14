@@ -1,22 +1,18 @@
 import {Followers} from "./Followers";
-import styles from "./Github.module.scss"
 import {Following} from "./Following";
 import {Repositories} from "./Repositories";
 import React, {useContext} from "react";
 import {Context} from "../Context";
 
-type PropsType = {
-}
-
-export const Additional: React.FC<PropsType> = ({})  => {
+export const Additional = () => {
     const {isRepositoriesRequested, isFollowersRequested, isFollowingRequested} = useContext(Context)
 
     if (isFollowersRequested) {
-        return <Followers />
+        return <Followers/>
     } else if (isFollowingRequested) {
-        return <Following />
-    } else if(isRepositoriesRequested) {
-        return  <Repositories />
+        return <Following/>
+    } else if (isRepositoriesRequested) {
+        return <Repositories/>
     } else {
         return null
     }

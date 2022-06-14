@@ -14,41 +14,26 @@ type RepositoriesType = {
     fork: boolean
     updated_at: string | number | Date
 }
-type PropsType = {
-}
 
-export const Repositories: React.FC<PropsType> = React.memo(({}) => {
-        const {selectedUser, isRepositoriesRequested,
-            fetchingRepositories, setFetchingRepositories,
-            repositoriesPagesCount} = useContext(Context)
+export const Repositories = React.memo(() => {
+        const {
+            selectedUser, isRepositoriesRequested, fetchingRepositories,
+            setFetchingRepositories, repositoriesPagesCount
+        } = useContext(Context)
         const [repositories, setRepositories] = useState<RepositoriesType[]>([])
         const [currentPage, setCurrentPage] = useState<number>(1)
         const [isLoadMoreBtnActive, setIsLoadMoreBtnActive] = useState<boolean>(true)
-        // const scrollHandler = (e: any) => {
-        //     if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 200) {
-        //         setFetchingRepositories(true)
-        //     }
-        // }
-        //
-        // useEffect(() => {
-        //     document.addEventListener('scroll', scrollHandler)
-        //     return function () {
-        //         document.removeEventListener('scroll', scrollHandler)
-        //     }
-        // }, [])
 
         useEffect(() => {
-            // @ts-ignore
             if (fetchingRepositories && currentPage <= repositoriesPagesCount) {
                 axios
-                    .get<RepositoriesType[]>(`https://api.github.com/users/${selectedUser?.login}/repos?page=${currentPage}&per_page=18`)
+                    .get<RepositoriesType[]>(`https://api.github.com/users/${selectedUser?.login}/repos?page=${currentPage}&per_page=21`)
                     .then(res => {
                         setRepositories([...repositories, ...res.data])
                         setCurrentPage(currentPage + 1)
                     })
                     .finally(() => setFetchingRepositories(false))
             }
-            // @ts-ignore
             if (fetchingRepositories && currentPage === repositoriesPagesCount) {
                 setIsLoadMoreBtnActive(false)
             }
@@ -56,8 +41,8 @@ export const Repositories: React.FC<PropsType> = React.memo(({}) => {
 
         return (
             <div className={styles.additional}>
-                <h2 className={styles.title}>Repositories</h2>
-                {!!isRepositoriesRequested ? <div>
+                {!!isRepositoriesRequested ? <div className={styles.additionalContent}>
+                    <h2 className={styles.title}>Repositories</h2>
                     <ul className={styles.repositoriesBlock}>
                         {repositories
                             .map(repo => <li className={styles.repository} key={repo.id}>
@@ -81,18 +66,18 @@ export const Repositories: React.FC<PropsType> = React.memo(({}) => {
                                         </div>
                                         }
                                     </div>
-                                    <a className={styles.button} target={'_blank'} href={repo.html_url}>
+                                    <a className={styles.button} target='_blank' rel='noreferrer' href={repo.html_url}>
                                         Open in GitHub
                                     </a>
                                 </li>
                             )}
                     </ul>
                     {
-                        isLoadMoreBtnActive && <div className={styles.loadMoreBtn} onClick={() => setFetchingRepositories(true)}>Load more</div>
+                        isLoadMoreBtnActive &&
+                        <div className={styles.loadMoreBtn} onClick={() => setFetchingRepositories(true)}>Load more</div>
                     }
                 </div> : null
-
-                    }
+                }
             </div>
         )
     }

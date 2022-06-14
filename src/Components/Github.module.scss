@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
+$textColor: #c9d1d9;
+
 *,
 *::before,
 *::after {
@@ -8,11 +10,9 @@
   border: 0;
   box-sizing: border-box;
 }
-
 a {
   text-decoration: none;
 }
-
 ul,
 ol,
 li {
@@ -21,11 +21,9 @@ li {
   margin-block-start: 0;
   margin-block-end: 0;
 }
-
 img {
   vertical-align: top;
 }
-
 h1,
 h2,
 h3,
@@ -35,59 +33,41 @@ h6 {
   font-weight: inherit;
   font-size: inherit;
 }
-
 html,
 body {
   font-family: 'Montserrat', sans-serif;
   height: 100%;
   line-height: 1;
   font-size: 14px;
-  color: #c9d1d9;
+  color: $textColor;
   background: #0d1117;
   font-weight: 500;
 }
-
 ._ibg {
   position: relative;
 }
-
 ._ibg img {
-  //position: absolute;
   width: 100%;
-  //height: 100%;
   left: 0px;
   top: 0px;
   object-fit: cover;
 }
-
-._container {
-  display: flex;
-  flex: 1 1 auto;
-  max-width: 1046px;
-  min-height: 100vh;
-  margin: 0 auto;
-  box-sizing: content-box;
-}
-
 .title {
-  display: flex;
-  flex: 0 0 auto;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
   font-size: 24px;
   line-height: 140%;
   font-weight: 700;
   padding: 10px;
 }
 .subtitle {
-  display: flex;
-  flex: 0 0 auto;
-  justify-content: center;
-  align-items: center;
+  @extend .title;
   font-size: 18px;
-  line-height: 140%;
   font-weight: 600;
   padding: 5px;
+}
+.error {
+  @extend .title;
+  color: red
 }
 .button {
   min-height: 30px;
@@ -105,58 +85,157 @@ body {
   text-align: center;
   transition: all 0.3s ease 0s;
   border-radius: 4px;
+  cursor: pointer;
 }
 .button:hover {
   background: #2dab45;
+}
+.scroll::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+  background-color: #30363d;
+}
+.scroll::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  background-color: $textColor;
+}
+.scroll::-webkit-scrollbar-track {
+  border-radius: 30px;
+  background-color: #30363d;
+}
+//==============================Header=====================
+.header {
+  display: flex;
+  flex-direction: row;
+  min-height: 80px;
+  max-width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+  background: #0d1117;
+  color: #c9d1d9;
+  position: fixed;
+  z-Index: 50;
+  width: 100%;
+  .logo {
+    display: flex;
+    flex-direction: row;
+    min-height: 64px;
+    align-items: center;
+    .logotype {
+      flex: 0 0 64px;
+      border-radius: 50%;
+      background: #eaeaea;
+      img {
+        transform: translate(-3%, 5%);
+      }
+    }
+  }
+  .headerTitle {
+    flex: 1 1 33.33%;
+    max-width: 349px;
+    font-size: 20px;
+    line-height: 142%;
+    font-weight: 700;
+    padding: 0 10px;
+    color: #c9d1d9;
+  }
+  .searchForm {
+    display: flex;
+    flex: 0 1 66.66%;
+    max-width: 697px;
+    input {
+      flex: 1 0 80%;
+      min-height: 38px;
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 0 20px;
+      border: 1px solid #30363d;
+      border-right: 0;
+      box-sizing: border-box;
+      border-radius: 5px 0 0 5px;
+      font-size: 20px;
+    }
+    input:focus {
+      outline: 0;
+    }
+    button {
+      flex: 1 1 20%;
+      background: #238636;
+      border-radius: 0px 5px 5px 0px;
+      display: flex;
+      min-height: 38px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      color: #fff;
+      padding: 0 22px;
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      background: #2dab45;
+    }
+  }
+}
+//========================Container==========================
+._container {
+  display: flex;
+  flex: 1 1 auto;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  box-sizing: content-box;
 }
 .content {
   display: flex;
   flex-direction: row;
   justify-content: start;
-  flex: 1 1 1046px;
+  flex: 1 1 auto;
   margin: 90px 0 0 0;
 }
+//============================SearchBlock========================
 .searchBlock {
   display: flex;
-  flex: 0 0 100%;
+  flex: 1 0 250px;
   flex-direction: column;
   box-sizing: border-box;
-  min-width: 260px;
-  margin: 0 0 20px 0;
-  z-index: 2;
+  min-width: 269px;
+  max-width: 1198px;
+  max-height: 85vh;
+  margin: 0 10px 20px 0;
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 5px;
-}
-.searchBlockMin {
-  @extend .searchBlock;
-  flex: 0 0 25%;
+  overflow-y: auto;
 }
 .usersList {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex: 0 0 auto;
   justify-content: center;
+  max-height: content-box;
 }
 .user {
   display: flex;
+  flex: 0 0 auto;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   min-width: 78px;
-  min-height: 110px;
-  //margin: 8px;
+  min-height: 122px;
+  max-height: 122px;
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
   border-radius: 5px;
   border: 1px solid #161b22;
-      .userLogin {
-        max-width: 80px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+  cursor: pointer;
+  .userLogin {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 .user:hover {
@@ -175,36 +254,39 @@ body {
     border-radius: 5px;
   }
 }
+//==============================RememberedBlock===================
+.rememberedBlock {
+  @extend .searchBlock;
+  margin: 0 0 20px 10px;
+}
+.rememberedUser {
+  .avatar {
+    display: block;
+    margin: 10px;
+    img {
+      min-width: 200px;
+      max-width: 200px;
+      border-radius: 5px;
+    }
+  }
+}
+//========================Profile===========================
 .userProfile {
   display: flex;
   flex-direction: column;
-  flex: 0 0 75%;
+  flex: 2 0 auto;
   justify-content: start;
-  min-width: 523px;
-  padding: 0 0 0 20px;
-  //padding: 0 270px;
-  //position: fixed;
-  //z-index: 0;
-}
-.closeUserProfile {
-  position: relative;
-  right: 0;
-  margin: 10px;
-  max-height: 20px;
-}
-.closeUserProfile:hover {
-  transform: scale(105%);
-  cursor: pointer;
+  max-width: 600px;
+  margin: 0 20px;
 }
 .profileContent {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   flex: 0 1 auto;
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 5px;
-  //position: fixed;
-  min-width: 480px;
   .button {
     margin: 10px auto;
     padding: 5px;
@@ -222,10 +304,9 @@ body {
   }
 }
 .profileLogin {
-  font-size: 30px;
-  line-height: 142%;
+  font-size: 24px;
+  line-height: 140%;
   font-weight: 700;
-
 }
 .profileInfo {
   display: flex;
@@ -235,16 +316,17 @@ body {
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
+  max-width: 360px;
   a {
     text-decoration: none;
-    color: #c9d1d9;
+    color: $textColor;
   }
   span {
     margin: 2px 0;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: 0.3px;
-}
+  }
 }
 .profileInfoItem {
   margin: 2px 0;
@@ -256,7 +338,18 @@ body {
   transform: scale(105%);
   cursor: pointer;
 }
-.additional {
+.closeUserProfileBtn {
+  position: relative;
+  right: 0;
+  margin: 10px;
+  max-height: 20px;
+}
+.closeUserProfileBtn:hover {
+  transform: scale(105%);
+  cursor: pointer;
+}
+//====================Additional================
+.additionalContent {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -267,9 +360,12 @@ body {
   border: 1px solid #30363d;
   border-radius: 5px;
 }
-.additionalContent {
-
+.loadMoreBtn {
+  @extend .button;
+  max-width: 150px;
+  margin: 10px auto;
 }
+//======================Repositories==================
 .repositoriesBlock {
   display: flex;
   flex: 0 0 auto;
@@ -279,13 +375,12 @@ body {
   font-size: 14px;
   line-height: 140%;
   font-weight: 500;
-
 }
 .repository {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 350px;
+  max-width: 269px;
   flex: 1 1 50%;
   border-radius: 5px;
   margin: 10px;
@@ -294,18 +389,102 @@ body {
   border: 1px solid #30363d;
 }
 .repositoryTitle {
-  font-size: 18px;
-  line-height: 140%;
-  font-weight: 600;
-  color: #c9d1d9;
+  @extend .subtitle;
+  padding: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .repositorySubtitle {
+  line-height: 140%;
   font-weight: 600;
   padding: 5px 0 0 0;
 }
-.loadMoreBtn {
-  @extend .button;
-  cursor: pointer;
-  max-width: 150px;
-  margin: 10px auto;
+//=====================MediaRequests=================
+@media (max-width: 1220px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    margin: 80px 0 0 0;
+  }
+  .searchBlock {
+    flex: 1 0 302px;
+    margin: 10px 20px;
+    order: 0;
+  }
+  .rememberedBlock {
+    flex: 1 0 182px;
+    margin: 10px 20px;
+    max-height: 302px;
+    order: -1;
+  }
+  .userProfile {
+    flex: 1 1 auto;
+    max-width: 1198px;
+    margin: 10px 20px;
+  }
+  .profileContent {
+    justify-content: center;
+  }
+  .repositoriesBlock {
+    justify-content: center;
+  }
+}
+@media (max-width: 1046px) {
+  .header {
+    padding: 0 20px;
+  }
+}
+@media (max-width: 700px) {
+  .header {
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 120px;
+  }
+  .searchForm {
+    flex: 1 1 auto;
+  }
+  .content {
+    margin: 120px 0 0 0;
+  }
+}
+@media (max-width: 640px) {
+  .repository {
+    max-width: 560px;
+    flex: 1 1 auto;
+  }
+}
+@media (max-width: 600px) {
+  .profileContent {
+    .avatar {
+      img {
+        min-width: 140px;
+        max-width: 140px;
+      }
+    }
+
+    .button {
+      max-width: 130px;
+    }
+  }
+}
+@media (max-width: 450px) {
+  .profileContent {
+    flex-direction: column;
+    align-items: center;
+    .avatarBlock {
+      display: flex;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+    }
+    .button {
+      flex: 1 1 auto;
+      margin: 10px;
+    }
+  }
+  .closeUserProfile {
+    display: none;
+  }
 }
