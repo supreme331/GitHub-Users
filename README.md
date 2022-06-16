@@ -2,4 +2,4 @@
 
 Небольшой проект на React с использованием TypeScript + SASS в синтаксисе SCSS. Использован GitHub API по средствам Axios, реализован поиск пользователей, возможность просмотреть репозитории, подписчиков, запомнить заинтересовавших пользователей. Применяется адаптивная верстка с использованием медиа-запросов.
 
-[https://supreme331.github.io/GitHub-Users/](https://supreme331.github.io/GitHub-Users/)
+[GitHub Users](https://supreme331.github.io/GitHub-Users/)
