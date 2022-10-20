@@ -1,38 +1,49 @@
-import styles from "./Github.module.scss";
-import React, {useContext} from "react";
-import {Context} from "../Context";
+import styles from "./Github.module.scss"
+import React, {useEffect, useState} from "react"
+import {useAppDispatch, useAppSelector} from "../hooks/redux"
+import {fetchUsers} from "../store/reducers/UsersSlice"
+import {User} from "./User"
 
-export const SearchList = () => {
-    const {
-        users, selectedUser, setSelectedUser, setIsFollowersRequested, setIsFollowingRequested,
-        setIsRepositoriesRequested, setIsFetchingUsers, isLoadMoreUsersBtnActive, setIsUserRemembered
-    } = useContext(Context)
+export const SearchList: React.FC<SearchListPropsType> = ({searchTerm, setSelectedUserLogin}) => {
+
+    const dispatch = useAppDispatch()
+    const {users, selectedUser} = useAppSelector(state => state.usersReducer)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+
+    const loadUsers = () => {
+        if (searchTerm) {
+            dispatch(fetchUsers({searchTerm, currentPage}))
+            setCurrentPage(() => currentPage + 1)
+        }
+    }
+
+    useEffect(() => {
+        loadUsers()
+    }, [searchTerm])
 
     return (
-        <div className={`${styles.searchBlock} ${styles.scroll}`}>
-            {users.length > 0 ? <h2 className={styles.title}>Found users</h2> :
-                <h2 className={styles.title}>Enter user login in search input</h2>}
-            <ul className={styles.usersList}>
-                {users
-                    .map((u) => <li className={`${styles.user} ${selectedUser?.id === u.id ? styles.selected : ''}`}
-                                    key={u.id}
-                                    onClick={() => {
-                                        setSelectedUser(u)
-                                        setIsUserRemembered(false)
-                                        setIsFollowersRequested(false)
-                                        setIsFollowingRequested(false)
-                                        setIsRepositoriesRequested(false)
-                                    }}>
-                        <div className={styles.avatarMin}>
-                            <img src={u.avatar_url} alt="avatar"/>
-                        </div>
-                        <span className={styles.userLogin}>{u.login}</span>
-                    </li>)}
-            </ul>
-            {
-                isLoadMoreUsersBtnActive &&
-                <div className={styles.loadMoreBtn} onClick={() => setIsFetchingUsers(true)}>Load more</div>
+        <>
+            {users.length > 0 && <div className={`${styles.searchBlock} ${styles.scroll}`}>
+                <h2 className={styles.title}>Found users</h2>
+                <ul className={styles.usersList}>
+                    {users
+                        .map((u) => <li className={`${styles.user} ${selectedUser?.id === u.id ? styles.selected : ''}`}
+                                        key={u.id}
+                                        onClick={() => {
+                                            setSelectedUserLogin(u.login)
+                                        }}>
+                            <User user={u} />
+                        </li>)}
+                </ul>
+                <div className={styles.loadMoreBtn} onClick={() => loadUsers()}>Load more</div>
+            </div>
             }
-        </div>
+        </>
     )
+}
+
+
+type SearchListPropsType = {
+    searchTerm: string;
+    setSelectedUserLogin: (login: string) => void
 }

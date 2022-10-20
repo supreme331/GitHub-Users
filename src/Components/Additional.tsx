@@ -1,19 +1,27 @@
-import {Followers} from "./Followers";
-import {Following} from "./Following";
-import {Repositories} from "./Repositories";
-import React, {useContext} from "react";
-import {Context} from "../Context";
+import {FollowersAndFollowing} from "./FollowersAndFollowing"
+import {Repositories} from "./Repositories"
+import React from "react"
 
-export const Additional = () => {
-    const {isRepositoriesRequested, isFollowersRequested, isFollowingRequested} = useContext(Context)
+export const Additional: React.FC<AdditionalPropsType> = ({
+                                                              additionalComponentName,
+                                                              setSelectedUserLogin,
+                                                              selectedUserLogin
+                                                          }) => {
 
-    if (isFollowersRequested) {
-        return <Followers/>
-    } else if (isFollowingRequested) {
-        return <Following/>
-    } else if (isRepositoriesRequested) {
+    if (additionalComponentName === 'followers' || additionalComponentName === 'following') {
+        return <FollowersAndFollowing
+            setSelectedUserLogin={setSelectedUserLogin}
+            selectedUserLogin={selectedUserLogin}
+            additionalComponentName={additionalComponentName}
+        />
+    } else if (additionalComponentName === 'repositories') {
         return <Repositories/>
-    } else {
-        return null
-    }
+    } else return null
+
+}
+
+type AdditionalPropsType = {
+    additionalComponentName: string
+    setSelectedUserLogin: (login: string) => void
+    selectedUserLogin: string
 }

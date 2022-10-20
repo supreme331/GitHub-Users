@@ -10,9 +10,11 @@ $textColor: #c9d1d9;
   border: 0;
   box-sizing: border-box;
 }
+
 a {
   text-decoration: none;
 }
+
 ul,
 ol,
 li {
@@ -21,9 +23,11 @@ li {
   margin-block-start: 0;
   margin-block-end: 0;
 }
+
 img {
   vertical-align: top;
 }
+
 h1,
 h2,
 h3,
@@ -33,6 +37,7 @@ h6 {
   font-weight: inherit;
   font-size: inherit;
 }
+
 html,
 body {
   font-family: 'Montserrat', sans-serif;
@@ -43,15 +48,18 @@ body {
   background: #0d1117;
   font-weight: 500;
 }
+
 ._ibg {
   position: relative;
 }
+
 ._ibg img {
   width: 100%;
   left: 0px;
   top: 0px;
   object-fit: cover;
 }
+
 .title {
   margin: 0 auto;
   font-size: 24px;
@@ -59,16 +67,14 @@ body {
   font-weight: 700;
   padding: 10px;
 }
+
 .subtitle {
   @extend .title;
   font-size: 18px;
   font-weight: 600;
   padding: 5px;
 }
-.error {
-  @extend .title;
-  color: red
-}
+
 .button {
   min-height: 30px;
   min-width: 150px;
@@ -87,22 +93,27 @@ body {
   border-radius: 4px;
   cursor: pointer;
 }
+
 .button:hover {
   background: #2dab45;
 }
+
 .scroll::-webkit-scrollbar {
   width: 8px;
   border-radius: 10px;
   background-color: #30363d;
 }
+
 .scroll::-webkit-scrollbar-thumb {
   border-radius: 30px;
   background-color: $textColor;
 }
+
 .scroll::-webkit-scrollbar-track {
   border-radius: 30px;
   background-color: #30363d;
 }
+
 //==============================Header=====================
 .header {
   display: flex;
@@ -117,20 +128,24 @@ body {
   position: fixed;
   z-Index: 50;
   width: 100%;
+
   .logo {
     display: flex;
     flex-direction: row;
     min-height: 64px;
     align-items: center;
+
     .logotype {
       flex: 0 0 64px;
       border-radius: 50%;
       background: #eaeaea;
+
       img {
         transform: translate(-3%, 5%);
       }
     }
   }
+
   .headerTitle {
     flex: 1 1 33.33%;
     max-width: 349px;
@@ -140,10 +155,12 @@ body {
     padding: 0 10px;
     color: #c9d1d9;
   }
+
   .searchForm {
     display: flex;
     flex: 0 1 66.66%;
     max-width: 697px;
+
     input {
       flex: 1 0 80%;
       min-height: 38px;
@@ -156,9 +173,11 @@ body {
       border-radius: 5px 0 0 5px;
       font-size: 20px;
     }
+
     input:focus {
       outline: 0;
     }
+
     button {
       flex: 1 1 20%;
       background: #238636;
@@ -173,27 +192,53 @@ body {
       padding: 0 22px;
       transition: all 0.2s ease;
     }
+
     button:hover {
       background: #2dab45;
     }
   }
 }
+
 //========================Container==========================
 ._container {
   display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   max-width: 1200px;
   min-height: 100vh;
   margin: 0 auto;
   box-sizing: content-box;
 }
+
 .content {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: start;
   flex: 1 1 auto;
   margin: 90px 0 0 0;
 }
+
+//============================ErrorBlock========================
+.errorBlock {
+  position: absolute;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+  width: 100vw;
+  min-height: 100px;
+  margin: 20px auto;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 5px;
+  z-index: 51;
+  .error {
+    @extend .title;
+    color: red
+  }
+}
+
 //============================SearchBlock========================
 .searchBlock {
   display: flex;
@@ -209,6 +254,7 @@ body {
   border-radius: 5px;
   overflow-y: auto;
 }
+
 .usersList {
   display: flex;
   flex-direction: row;
@@ -216,6 +262,7 @@ body {
   justify-content: center;
   max-height: content-box;
 }
+
 .user {
   display: flex;
   flex: 0 0 auto;
@@ -232,37 +279,45 @@ body {
   border-radius: 5px;
   border: 1px solid #161b22;
   cursor: pointer;
+
   .userLogin {
     max-width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 }
+
 .user:hover {
   background: #1d242d;
 }
+
 .selected {
   border: 1px solid #30363d;
   border-radius: 5px;
   background: #1d242d;
   font-weight: 500;
 }
+
 .avatarMin {
   padding: 5px;
+
   img {
     max-width: 70px;
     border-radius: 5px;
   }
 }
+
 //==============================RememberedBlock===================
 .rememberedBlock {
   @extend .searchBlock;
   margin: 0 0 20px 10px;
 }
+
 .rememberedUser {
   .avatar {
     display: block;
     margin: 10px;
+
     img {
       min-width: 200px;
       max-width: 200px;
@@ -270,6 +325,7 @@ body {
     }
   }
 }
+
 //========================Profile===========================
 .userProfile {
   display: flex;
@@ -279,7 +335,9 @@ body {
   max-width: 600px;
   margin: 0 20px;
 }
+
 .profileContent {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -287,15 +345,18 @@ body {
   background: #161b22;
   border: 1px solid #30363d;
   border-radius: 5px;
+
   .button {
     margin: 10px auto;
     padding: 5px;
     max-width: 200px;
     max-height: 40px;
   }
+
   .avatar {
     display: block;
     margin: 10px;
+
     img {
       min-width: 200px;
       max-width: 200px;
@@ -303,11 +364,17 @@ body {
     }
   }
 }
+
+.wrapperBlock {
+
+}
+
 .profileLogin {
   font-size: 24px;
   line-height: 140%;
   font-weight: 700;
 }
+
 .profileInfo {
   display: flex;
   flex: 1 1 auto;
@@ -317,10 +384,12 @@ body {
   line-height: 140%;
   font-weight: 500;
   max-width: 360px;
+
   a {
     text-decoration: none;
     color: $textColor;
   }
+
   span {
     margin: 2px 0;
     font-size: 16px;
@@ -328,26 +397,31 @@ body {
     letter-spacing: 0.3px;
   }
 }
+
 .profileInfoItem {
   margin: 2px 0;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.3px;
 }
+
 .profileInfoItem:hover {
   transform: scale(105%);
   cursor: pointer;
 }
+
 .closeUserProfileBtn {
-  position: relative;
+  position: absolute;
   right: 0;
   margin: 10px;
   max-height: 20px;
 }
+
 .closeUserProfileBtn:hover {
   transform: scale(105%);
   cursor: pointer;
 }
+
 //====================Additional================
 .additionalContent {
   display: flex;
@@ -360,11 +434,13 @@ body {
   border: 1px solid #30363d;
   border-radius: 5px;
 }
+
 .loadMoreBtn {
   @extend .button;
   max-width: 150px;
   margin: 10px auto;
 }
+
 //======================Repositories==================
 .repositoriesBlock {
   display: flex;
@@ -376,6 +452,7 @@ body {
   line-height: 140%;
   font-weight: 500;
 }
+
 .repository {
   display: flex;
   flex-direction: column;
@@ -388,17 +465,20 @@ body {
   background: #1d242d;
   border: 1px solid #30363d;
 }
+
 .repositoryTitle {
   @extend .subtitle;
   padding: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .repositorySubtitle {
   line-height: 140%;
   font-weight: 600;
   padding: 5px 0 0 0;
 }
+
 //=====================MediaRequests=================
 @media (max-width: 1220px) {
   .content {
@@ -411,6 +491,9 @@ body {
     flex: 1 0 302px;
     margin: 10px 20px;
     order: 0;
+  }
+  .errorBlock {
+    flex: 1 0 100px;
   }
   .rememberedBlock {
     flex: 1 0 182px;
@@ -430,11 +513,13 @@ body {
     justify-content: center;
   }
 }
+
 @media (max-width: 1046px) {
   .header {
     padding: 0 20px;
   }
 }
+
 @media (max-width: 700px) {
   .header {
     flex-direction: column;
@@ -448,12 +533,14 @@ body {
     margin: 120px 0 0 0;
   }
 }
+
 @media (max-width: 640px) {
   .repository {
     max-width: 560px;
     flex: 1 1 auto;
   }
 }
+
 @media (max-width: 600px) {
   .profileContent {
     .avatar {
@@ -468,17 +555,21 @@ body {
     }
   }
 }
+
 @media (max-width: 450px) {
   .profileContent {
     flex-direction: column;
     align-items: center;
-    .avatarBlock {
+
+    .wrapperBlock {
       display: flex;
     }
+
     .buttons {
       display: flex;
       flex-direction: column;
     }
+
     .button {
       flex: 1 1 auto;
       margin: 10px;

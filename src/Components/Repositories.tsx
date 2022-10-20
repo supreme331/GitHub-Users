@@ -1,85 +1,73 @@
-import React, {useContext, useEffect, useState} from "react";
-import {UserType} from "./Github";
-import axios from "axios";
-import {Context} from "../Context";
-import styles from "./Github.module.scss";
+import React, {useEffect, useState} from "react"
+import styles from "./Github.module.scss"
+import {useAppDispatch, useAppSelector} from "../hooks/redux"
+import {fetchRepositories} from "../store/reducers/RepositoriesSlice"
+import {IRepository} from "../models/IRepository"
+import {LoadMore} from "./LoadMore"
 
-type RepositoriesType = {
-    id: number
-    name: string
-    owner: UserType
-    html_url: string
-    description: string | null
-    language: string | null
-    fork: boolean
-    updated_at: string | number | Date
+export const Repositories: React.FC = () => {
+
+    const dispatch = useAppDispatch()
+    const selectedUser = useAppSelector(state => state.usersReducer.selectedUser)
+    const {repositories} = useAppSelector(state => state.repositoriesReducer)
+    const [currentPage, setCurrentPage] = useState<number>(1)
+
+    const loadRepositories = () => {
+        if (selectedUser) {
+            dispatch(fetchRepositories({login: selectedUser.login, currentPage}))
+            setCurrentPage(() => currentPage + 1)
+        }
+    }
+
+    useEffect(() => {
+        loadRepositories()
+    }, [])
+
+    return (
+        <div className={styles.additional}>
+            <div className={styles.additionalContent}>
+                <h2 className={styles.title}>Repositories</h2>
+                <ul className={styles.repositoriesBlock}>
+                    {repositories
+                        .map(repo => <li className={styles.repository} key={repo.id}>
+                                <Repository repository={repo}/>
+                            </li>
+                        )}
+                </ul>
+                <LoadMore callBack={loadRepositories} />
+            </div>
+        </div>
+    )
 }
 
-export const Repositories = React.memo(() => {
-        const {
-            selectedUser, isRepositoriesRequested, fetchingRepositories,
-            setFetchingRepositories, repositoriesPagesCount
-        } = useContext(Context)
-        const [repositories, setRepositories] = useState<RepositoriesType[]>([])
-        const [currentPage, setCurrentPage] = useState<number>(1)
-        const [isLoadMoreBtnActive, setIsLoadMoreBtnActive] = useState<boolean>(true)
-
-        useEffect(() => {
-            if (fetchingRepositories && currentPage <= repositoriesPagesCount) {
-                axios
-                    .get<RepositoriesType[]>(`https://api.github.com/users/${selectedUser?.login}/repos?page=${currentPage}&per_page=21`)
-                    .then(res => {
-                        setRepositories([...repositories, ...res.data])
-                        setCurrentPage(currentPage + 1)
-                    })
-                    .finally(() => setFetchingRepositories(false))
+const Repository: React.FC<RepositoryPropsType> = ({ repository }) => {
+    return (
+        <>
+            <h3 className={styles.repositoryTitle}>
+                {repository.name}
+            </h3>
+            {repository.description &&
+                <div>
+                    <div className={styles.repositorySubtitle}>Description:</div>
+                    {repository.description}
+                </div>
             }
-            if (fetchingRepositories && currentPage === repositoriesPagesCount) {
-                setIsLoadMoreBtnActive(false)
-            }
-        }, [fetchingRepositories])
-
-        return (
-            <div className={styles.additional}>
-                {!!isRepositoriesRequested ? <div className={styles.additionalContent}>
-                    <h2 className={styles.title}>Repositories</h2>
-                    <ul className={styles.repositoriesBlock}>
-                        {repositories
-                            .map(repo => <li className={styles.repository} key={repo.id}>
-                                    <div>
-                                        <h3 className={styles.repositoryTitle}>
-                                            {repo.name}
-                                        </h3>
-                                        {repo.description &&
-                                            <div>
-                                                <div className={styles.repositorySubtitle}>Description:</div>
-                                                {repo.description}
-                                            </div>
-                                        }
-                                        {repo.language && <div>
-                                            <div className={styles.repositorySubtitle}>Language:</div>
-                                            {repo.language}
-                                        </div>}
-                                        {repo.updated_at && <div>
-                                            <div className={styles.repositorySubtitle}>Updated:</div>
-                                            {new Date(repo.updated_at).toString().slice(0, 15)}
-                                        </div>
-                                        }
-                                    </div>
-                                    <a className={styles.button} target='_blank' rel='noreferrer' href={repo.html_url}>
-                                        Open in GitHub
-                                    </a>
-                                </li>
-                            )}
-                    </ul>
-                    {
-                        isLoadMoreBtnActive &&
-                        <div className={styles.loadMoreBtn} onClick={() => setFetchingRepositories(true)}>Load more</div>
-                    }
-                </div> : null
-                }
+            {repository.language && <div>
+                <div className={styles.repositorySubtitle}>Language:</div>
+                {repository.language}
+            </div>}
+            {repository.updated_at && <div>
+                <div className={styles.repositorySubtitle}>Updated:</div>
+                {new Date(repository.updated_at).toString().slice(0, 15)}
             </div>
-        )
-    }
-)
+            }
+            <a className={styles.button} target='_blank' rel='noreferrer' href={repository.html_url}>
+                Open in GitHub
+            </a>
+        </>
+    )
+}
 
+type RepositoryPropsType = {
+    repository: IRepository;
+}

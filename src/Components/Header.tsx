@@ -1,20 +1,16 @@
-import React, {useContext} from "react";
-import {Context} from "../Context";
-import styles from "./Github.module.scss";
+import React, {useState} from "react"
+import styles from "./Github.module.scss"
 import logoIcon from "../img/github.png"
-import {NavLink} from "react-router-dom";
+import {NavLink} from "react-router-dom"
 
-export const Header = () => {
-    const {
-        setSearchTerm, tempSearch, setTempSearch, setIsFetchingUsers,
-        setUsers, setCurrentSearchPage
-    } = useContext(Context)
+export const Header: React.FC<HeaderPropsType> = ({ setSearchTerm }) => {
+
+    const [tempSearch, setTempSearch] = useState<string>('')
+
     const submit = (tempSearch: string) => {
-        setUsers([])
-        setCurrentSearchPage(1)
         setSearchTerm(tempSearch)
-        setIsFetchingUsers(true)
     }
+
     return (
         <div className={styles.header}>
             <div className={styles.logo}>
@@ -30,16 +26,12 @@ export const Header = () => {
     )
 }
 
-type SearchFormType = {
-    tempSearch: string
-    setTempSearch: (tempSearch: string) => void
-    submit: (tempSearch: string) => void
-}
-
 const SearchForm: React.FC<SearchFormType> = ({tempSearch, setTempSearch, submit}) => {
+
     const handleSubmit = (e: any) => {
         e.preventDefault()
     }
+
     return (
         <form className={styles.searchForm} onSubmit={handleSubmit}>
             <input required placeholder={'Search GitHub users'} type="search" value={tempSearch} onChange={(e) => {
@@ -51,4 +43,14 @@ const SearchForm: React.FC<SearchFormType> = ({tempSearch, setTempSearch, submit
             </button>
         </form>
     )
+}
+
+type HeaderPropsType = {
+    setSearchTerm: (searchTerm: string) => void;
+}
+
+type SearchFormType = {
+    tempSearch: string
+    setTempSearch: (tempSearch: string) => void
+    submit: (tempSearch: string) => void
 }
